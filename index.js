@@ -41,6 +41,7 @@ bot.on('callback_query', function (query) {
 	if(parseInt(query.data).toString() === query.data){
 		fs.readFile(`./faq/${query.data}.txt`, 'UTF-8', function (err, answer) {
 			if(err) console.log(err)
+
 			else {
 				answer += "\n\nОстальные вопросы: /faq";
 				bot.sendMessage(chat.id, answer)
@@ -57,7 +58,7 @@ bot.on('callback_query', function (query) {
 })
 
 bot.on('polling_error', (error) => {
-	console.log('POOLING ERROR')
+	console.log('POOLING ERROR');
 	console.log(error.code);  // => 'EFATAL'
 });
 
