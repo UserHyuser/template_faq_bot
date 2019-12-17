@@ -1,0 +1,20 @@
+{
+  "name": "template_faq_bot",
+  "version": "0.0.1",
+  "description": "Template of FAQ bot for your purposes",
+  "main": "index.js",
+  "author": "Nikita",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "socks-proxy-agent": "^4.0.2",
+    "telegraf": "^3.34.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
