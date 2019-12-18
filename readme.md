@@ -1,1 +1,1 @@
-FAQ bot template
+Bot telegram template

@@ -4,9 +4,12 @@ const fs = require('fs');
 require('dotenv').config(); // Load config from .env file
 const HttpsProxyAgent = require('https-proxy-agent');
 
-// const keyboard = require('./bin/keyboard'); // Global access
+
 
 const bot = new TelegramBot(process.env.TELEGRAM_TOKEN, {polling: true});
+
+const ProcessCallbackQuery = require('./bin/callback_query');
+let processCallbackQuery = new ProcessCallbackQuery();
 
 bot.onText(/\/start/, (msg) => {
 	const chatId = msg.chat.id;
@@ -16,7 +19,7 @@ bot.onText(/\/start/, (msg) => {
 });
 
 bot.onText(/\/faq/, (msg) => {
-	const keyboard = require('./bin/keyboard');
+	const keyboard = processCallbackQuery.keyboard;
 	const chatId = msg.chat.id;
 
 	bot.sendMessage(chatId, `#1. Как связаться с автором этого бота?
@@ -32,34 +35,12 @@ bot.onText(/\/faq/, (msg) => {
 bot.sendMessage(process.env.ADMIN_ID, "Бот запущен!");
 
 bot.on('callback_query', function (query) {
-	const {chat, message_id, text} = query.message;
-
-	fs.readdir("./faq", function (err, files) { // Count files in faq
-		let amount = files.length;
-	})
-
-	if(parseInt(query.data).toString() === query.data){
-		fs.readFile(`./faq/${query.data}.txt`, 'UTF-8', function (err, answer) {
-			if(err) console.log(err)
-
-			else {
-				answer += "\n\nОстальные вопросы: /faq";
-				bot.sendMessage(chat.id, answer)
-			}
-		})
-	} else{
-		bot.sendMessage(chat.id, process.env.ERR_MSG)
-	}
-
-	// Pick button as done
-	bot.answerCallbackQuery({
-		callback_query_id: query.id
-	})
+	processCallbackQuery.process(bot, query);
 })
 
 bot.on('polling_error', (error) => {
 	console.log('POOLING ERROR');
-	console.log(error.code);  // => 'EFATAL'
+	console.log(error);  // => 'EFATAL'
 });
 
 console.log("Bot started...");
