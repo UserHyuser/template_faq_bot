@@ -4,6 +4,7 @@ module.exports = class Faq {
 		this.page_number = 0;
 		this.question_number = 1;
 		this.update_keyboard();
+
 		this.get_questions();
 	}
 
@@ -73,6 +74,7 @@ module.exports = class Faq {
 		fs.readdir("./faq", function (err, files) { // Count files in faq
 			let amount = files.length;
 		});
+
 		if (parseInt(query.data).toString() === query.data) {
 			let question = `#${query.data}. ` + this.get_question(query.data - 1)
 			fs.readFile(`./faq/${query.data}.txt`, 'UTF-8', function (err, answer) {
@@ -96,7 +98,7 @@ module.exports = class Faq {
 		} else {
 			bot.sendMessage(chat.id, process.env.ERR_MSG)
 		}
-		// Pick button as done
+
 		bot.answerCallbackQuery({
 			callback_query_id: query.id
 		})
@@ -121,6 +123,7 @@ module.exports = class Faq {
 			return [this.keyboard[0], this.keyboard[2]]
 		} else if (amount_to_show === 4)
 			return this.keyboard;
+
 		console.error('ERROR: Количество вопросов должно быть кратно 2-м!')
 	}
 };
